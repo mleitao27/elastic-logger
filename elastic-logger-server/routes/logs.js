@@ -4,8 +4,19 @@ const router = express.Router();
 
 // Get log
 router.get('/', async (req, res) => {
-  
-  res.status(200).send('index');
+    const { Client } = require('@elastic/elasticsearch')
+    const client = new Client({
+        node: 'http://es01:9200',
+    //   auth: {
+    //     username: 'elastic',
+    //     password: 'changeme'
+    //   }
+    })
+    const result = await client.search({
+        index: 'logs',
+    })
+    console.log(result)
+    res.status(200).send(result);
 });
 
 // Get log by id
